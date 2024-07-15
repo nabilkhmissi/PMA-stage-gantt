@@ -1,0 +1,65 @@
+.toast-class{
+    padding : 10px;
+    border-radius: 8px;
+    position: fixed;
+    top: 20px;
+    right: 10px;
+    max-width: 400px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 5px 10px -7px rgba(0, 0, 0, 0.13);
+}
+
+.toast-class.danger{
+    background-color: rgb(255, 167, 167);
+    border-left: 5px solid rgb(243, 93, 93);
+}
+.toast-class.success{
+    border-left: 5px solid rgb(126, 235, 126);
+    background-color: rgb(183, 255, 211);
+}
+
+i-feather{
+    color: rgb(255, 255, 255);
+}
+.toast-close{
+    color: rgba(0, 0, 0, 0.137);
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.toast-close i-feather{
+    color: rgba(0, 0, 0, 0.363);
+}
+
+.toast-content{
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+}
+.icon-wrapper{
+    padding: 4px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.icon-wrapper.danger{
+    background-color: rgb(243, 93, 93);
+}
+.icon-wrapper.success{
+    background-color: rgb(126, 235, 126);
+}
+
+
+@media screen and (max-width:700px) {
+    .toast-class {
+        left: 10px;
+        right: 10px;
+        max-width: 100%;
+    }
+}

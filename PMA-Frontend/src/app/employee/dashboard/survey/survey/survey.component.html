@@ -1,0 +1,218 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    {{dialogTitle}}
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+  <mat-icon>close</mat-icon>
+</button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="myRiskForm" (ngSubmit)="submit">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>How often do the tasks assigned to you by your Project manager help you grow professionally? </mat-label>
+                        <mat-select formControlName="q1" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q1').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+
+                        <mat-label>How easy is it to get help from your project manager when you want it? </mat-label>
+                        <mat-select formControlName="q2" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q2').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>How effective is the training you receive from your Project manager? </mat-label>
+                        <mat-select formControlName="q3" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q3').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> How reasonable are the decisions made by your Project manager? </mat-label>
+                        <mat-select formControlName="q4" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q4').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> how often does your supervisor listen to employee's opinion when making decisions? </mat-label>
+                        <mat-select formControlName="q5" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q5').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> How professionally does your project manager behave? </mat-label>
+                        <mat-select formControlName="q6" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q6').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> How often does your Project manager offer you opportunities for your professional growth? </mat-label>
+                        <mat-select formControlName="q7" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q7').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label> How often is communication with your project manager productive? </mat-label>
+                        <mat-select formControlName="q8" required>
+                            <mat-option [value]="100">Very good
+                            </mat-option>
+                            <mat-option [value]="80">Good
+                            </mat-option>
+                            <mat-option [value]="60">Medicore
+                            </mat-option>
+                            <mat-option [value]="40">Bad
+                            </mat-option>
+                            <mat-option [value]="20">Very bad
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('q8').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- 	"r1":"Very good",
+    	"r2":"Good",
+		"r3":"Medicore",
+		"r4":"Bad",
+		"r5":"Very bad", -->
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row" align="end">
+                        <button mat-raised-button color="primary" [type]="submit" [disabled]="!myRiskForm.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

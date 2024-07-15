@@ -1,0 +1,22 @@
+<div class="toast-class success" *ngIf="success$ | async as success">
+    <div class="toast-content">
+        <div class="icon-wrapper success">
+            <i-feather name="check"></i-feather>
+        </div>
+        {{ success }}
+    </div>
+    <i-feather name="x" class="toast-close" (click)="closeSuccessToast()"></i-feather>
+</div>
+<div class="toast-class danger" *ngIf="error$ | async as error">
+    <div class="toast-content">
+        <div class="icon-wrapper danger">
+            <i-feather name="x"></i-feather>
+        </div>
+        {{ error }}
+    </div>
+    <div class="toast-close">
+        <i-feather name="x" (click)="closeErrorToast()"></i-feather>
+    </div>
+</div>
+<app-page-loader></app-page-loader>
+<router-outlet></router-outlet>

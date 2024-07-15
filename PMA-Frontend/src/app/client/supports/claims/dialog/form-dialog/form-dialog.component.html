@@ -1,0 +1,98 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    {{dialogTitle}}
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="claimform" (ngSubmit)="submit">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="Title" required>
+                        <mat-icon matSuffix>person_outline</mat-icon>
+                        <mat-error *ngIf="claimform.get('Title').hasError('required')">
+                            Created By is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>project</mat-label>
+                        <mat-select formControlName="project" required>
+                            <mat-option *ngFor="let item of projects" [value]="item">
+                                {{ item.Projectname}}
+                            </mat-option>
+
+                        </mat-select>
+                        <mat-icon matSuffix>subject</mat-icon>
+                        <mat-error *ngIf="claimform.get('project').hasError('required')">
+                            project is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Type Reclamation</mat-label>
+                        <mat-select formControlName="Type_Reclamation" required>
+                            <mat-option [value]="'Technical'">
+                                Technical
+                            </mat-option>
+                            <mat-option [value]="'Commercial'">
+                                Commercial
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="claimform.get('Type_Reclamation').hasError('required')">
+                            Assign To is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row" *ngIf="claim.status=='Treated'">
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status" required>
+                            <mat-option [value]="'Validate'">
+                                Validate
+                            </mat-option>
+
+                        </mat-select>
+                        <mat-error *ngIf="claimform.get('status').hasError('required')">
+                            Status is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Comment</mat-label>
+                        <textarea matInput formControlName="Comment"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row" align="end">
+                        <button mat-raised-button color="primary" [type]="submit" [disabled]="!claimform.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

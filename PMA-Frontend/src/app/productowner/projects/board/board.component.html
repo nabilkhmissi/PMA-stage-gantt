@@ -1,0 +1,156 @@
+<div class="board">
+    <div *ngFor="let list of lists | keyvalue : unsorted" class="list">
+        <div class="header">
+            <div class="title">
+                <h2 [ngClass]="getColor(list.key)">
+                    <ng-container [ngSwitch]="list.key">
+                        <ng-container *ngSwitchCase="'NEWPROJECT'">New Project</ng-container>
+                        <ng-container *ngSwitchCase="'INPROGRESS'">In Progress</ng-container>
+                        <ng-container *ngSwitchCase="'ONHOLD'">On Hold</ng-container>
+                        <ng-container *ngSwitchCase="'COMPLETED'">Completed</ng-container>
+                    </ng-container>
+                </h2>
+                <div class="count">
+                    {{ list.value.length }} {{ list.value.length | pluralize : "project" : "projects" : "projects" }}
+                </div>
+            </div>
+        </div>
+
+        <ul class="projects" id="{{ list.key }}" cdkDropList cdkDropListSortingDisabled [cdkDropListData]="list.value" [cdkDropListConnectedTo]="[
+      'NEWPROJECT',
+      'INPROGRESS',
+
+      'COMPLETED'
+    ]" (cdkDropListDropped)="drop($event)">
+            <li class="project" *ngFor="let project of list.value" cdkDrag [cdkDragData]="project" (dblclick)="editProjectDialog(project)">
+                <h4 class="project-title" (click)="showDetails(project)">
+                    <span class="material-icons-outlined project-icon"> task_alt </span
+        >{{ project.Projectname }}
+      </h4>
+      <!--  <small class="block text-ellipsis m-b-15">
+        <span class="text-xs">{{ project.open_task }}</span>
+                    <span class="text-muted"> open tasks </span>
+                    </small> -->
+                    <span class="project-bedge project-type-{{ project.type }}">
+        <div class="pro-left">
+          <ng-template [ngIf]="project.type == 'Development'"
+          >Development</ng-template
+        >
+        <ng-template [ngIf]="project.type == 'Systems and Network Infrastructure'">Systems and Network Infrastructure</ng-template>
+        <ng-template [ngIf]="project.type == 'Systems Infrastructure'">Systems Infrastructure</ng-template>
+
+        <ng-template [ngIf]="project.type == ' Network Infrastructure'"
+          > Network Infrastructure</ng-template
+        >
+        </div>
+      </span>
+                    <p class="mt-3">
+                        {{ project.description | truncate : [280, "&hellip;"] }}
+                    </p>
+                    <div class="project-members m-b-15">
+                        <ul class="team-members">
+                            <li class="dropdown avatar-dropdown">
+                                <div class="row">
+                                    <div class="col-5 pro-left mb-2">start Date:</div>
+                                    <div class="col-7 pro-left mb-2">
+                                        <span class="material-icons-outlined project-icon2">
+                  date_range </span
+                >{{ project.dateDebut | date }}
+              </div>
+              <div class="col-5 pro-left mb-2">Team Leader:</div>
+              <div *ngIf="project.TeamLeader" class="col-7 pro-left mb-2">
+                {{ project.TeamLeader.fullName }}
+              </div>
+              <div *ngIf="!project.TeamLeader" class="col-7 pro-left mb-2">
+               Not assigned yet
+              </div>
+              <div class="col-5 pro-left mb-2">Priority:</div>
+              <div
+                class="col-7 pro-lef mb-2 project-priority-{{
+                  project.priority
+                }}"
+              >
+                <ng-template [ngIf]="project.priority === 'High'"
+                  ><span class="material-icons-outlined project-icon">
+                    keyboard_double_arrow_up </span
+                  >High</ng-template
+                >
+                <ng-template [ngIf]="project.priority === 'Medium'"
+                  ><span class="material-icons-outlined project-icon">
+                    switch_right </span
+                  >Medium</ng-template
+                >
+                <ng-template [ngIf]="project.priority === 'Low'"
+                  ><span class="material-icons-outlined project-icon">
+                    keyboard_double_arrow_down </span
+                  >Low</ng-template
+                >
+              </div>
+              <div class="col-5 pro-left mb-2">Deadline:</div>
+              <div class="col-7 pro-left mb-2">
+                <div class="deadline" *ngIf="project.dateFin">
+                  <span class="material-icons-outlined project-icon2">
+                    date_range </span
+                  >{{ project.dateFin | date }}
+                </div>
+              </div>
+              <div class="col-5 pro-left mb-2">Client:</div>
+              <div class="col-7 pro-left mb-2">
+                {{ project.client.fullName }}
+              </div>
+           <!--    <div class="col-5 pro-left mb-2">Bug:</div>
+              <div class="col-7 pro-left mb-2">{{ project.bugs }}</div> -->
+              <div class="col-5 pro-left mb-2">Team:</div>
+              <div class="col-7 pro-left">
+                <ul class="list-unstyled order-list">
+                  <li
+                    *ngFor="let t of project.equipe"
+                    class="avatar avatar-sm"
+                  >
+                    <img
+                      src="https://pma-backend.prologic.com.tn:3002/static/images/{{
+                        t.image || 'avaat.png'
+                      }}"
+                      matTooltip="{{ t.fullName }}"
+                      class="rounded-circle"
+                      alt="team-member"
+                    />
+                  </li>
+
+                  <li *ngIf="!project.equipe">Not assigned yet</li>
+                  <!--  <li class="avatar avatar-sm">
+                    <span class="badge">+4</span>
+                            </li> -->
+                        </ul>
+                        </div>
+                        </div>
+            </li>
+        </ul>
+        </div>
+        <p class="m-b-5">
+            Progress
+            <span class="text-success float-end">{{ project.progress.toFixed(0)}}%</span>
+        </p>
+        <div class="progress progress-xs mb-0">
+            <mat-progress-bar mode="determinate" value="{{ project.progress.toFixed(0) }}"></mat-progress-bar>
+        </div>
+        <button mat-icon-button class="project-actions" [matMenuTriggerFor]="menu" (dblclick)="(null)">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+        <mat-menu #menu="matMenu" class="project-actions-menu">
+            <button mat-menu-item (click)="editProjectDialog(project)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit Project</span>
+        </button>
+            <button mat-menu-item (click)="addfile(project)">
+          <mat-icon>add_box</mat-icon>
+          <span>Add Files</span>
+        </button>
+
+
+        </mat-menu>
+        </li>
+        <button class="show-more" (click)="handleShowMore(list.key)" *ngIf="!showMoreButtonCheck(list.value, list.key)">Showmore</button>
+        </ul>
+    </div>
+</div>

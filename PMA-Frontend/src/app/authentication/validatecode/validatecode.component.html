@@ -1,0 +1,40 @@
+<div class="auth-container">
+    <div class="row auth-main">
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+            <div class="left-img" style="background-image: url(assets/images/code.png);">
+            </div>
+        </div>
+        <div class="col-sm-6 auth-form-section">
+            <div class="form-section">
+                <div class="auth-wrapper">
+                    <form class="validate-form" [formGroup]="codeForm" (ngSubmit)="onSubmit()">
+                        <h2 class="welcome-msg">
+                            Enter the validation code
+                        </h2>
+                       
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                <span class="error-subheader2 mb-2" style="text-align: start;">
+                                    Enter your code here.
+                                </span>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Validation Code</mat-label>
+                                    <input matInput formControlName="code" type="String" required>
+                                    <mat-error *ngIf="codeForm.get('code').hasError('required')">
+                                        Validation code is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="container-auth-form-btn mt-1">
+                            <button mat-flat-button color="primary" class="auth-form-btn" [disabled]="!codeForm.valid " type="submit">
+                                validate
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

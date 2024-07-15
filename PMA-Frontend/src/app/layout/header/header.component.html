@@ -1,0 +1,54 @@
+<nav #navbar class="navbar active">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" onClick="return false;" class="navbar-toggle collapsed" (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+            <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+            <a class="navbar-brand">
+                <img src="assets/images/logo.png" alt="" />
+                <span class="logo-name">PMA</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" [ngClass]="isNavbarCollapsed ? '' : 'show'">
+            <ul class="float-start collapse-menu-icon">
+                <li>
+                    <button mat-button (click)="callSidemenuCollapse()" class="sidemenu-collapse nav-notification-icons">
+            <app-feather-icons [icon]="'menu'" [class]="'header-icon'"></app-feather-icons>
+          </button>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="fullscreen">
+                    <button mat-button class="nav-notification-icons" (click)="callFullscreen()">
+            <app-feather-icons [icon]="'maximize'" [class]="'header-icon'"></app-feather-icons>
+          </button>
+                </li>
+                <li class="nav-item user_profile">
+                    <button mat-button [matMenuTriggerFor]="profilemenu">
+            <div class="chip dropdown-toggle" ngbDropdownToggle class="">
+              <span>{{userFullName}}</span>
+              <img src="{{userImg}}" class="user_img" width="32" height="32" alt="User">
+            </div>
+          </button>
+                    <mat-menu #profilemenu="matMenu" class="profile-menu">
+                        <div class="noti-list">
+                            <div class="menu ">
+                                <div class="user_dw_menu">
+                                    <button mat-menu-item routerLink="extra-pages/profile">
+                    <app-feather-icons [icon]="'user'" [class]="'user-menu-icons'"></app-feather-icons>Account
+                  </button>
+                                    <button mat-menu-item (click)="switchRole()" *ngIf="showWhenEngineerOrTL()">
+                                        <app-feather-icons [icon]="'shuffle'" [class]="'user-menu-icons'"></app-feather-icons>Switch to {{displayRoleSwitch()}}
+                                    </button>
+                                    <button mat-menu-item (click)="logout()">
+                                        <app-feather-icons [icon]="'log-out'" [class]="'user-menu-icons'"></app-feather-icons>Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-menu>
+                </li>
+                <!-- #END# Tasks -->
+            </ul>
+        </div>
+    </div>
+</nav>

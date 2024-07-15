@@ -1,0 +1,184 @@
+<div class="addContainer">
+    <div *ngIf="!isDetails">
+        <div class="modalHeader">
+            <div class="editRowModal">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        {{ dialogTitle }}
+                    </div>
+                </div>
+            </div>
+            <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div mat-dialog-content>
+            <form class="register-form m-4" [formGroup]="myTasksForm" (ngSubmit)="(submit)">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Title</mat-label>
+                            <input matInput formControlName="Title" required readonly />
+                            <mat-icon matSuffix>task_alt</mat-icon>
+                            <mat-error *ngIf="myTasksForm.get('Title').hasError('required')">
+                                Task title is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Project</mat-label>
+                            <input matInput formControlName="Project" required readonly />
+                            <mat-icon matSuffix>business_center</mat-icon>
+                            <mat-error *ngIf="myTasksForm.get('Project').hasError('required')">
+                                Project is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="Status" required>
+                                <mat-option [value]="'Open'"> Open </mat-option>
+                                <mat-option [value]="'Closed'"> Closed </mat-option>
+                                <mat-option [value]="'Pending'"> Pending </mat-option>
+
+                            </mat-select>
+                            <mat-error *ngIf="myTasksForm.get('Status').hasError('required')">
+                                Select task status
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Priority</mat-label>
+                            <mat-select formControlName="Priority" required [readonly]="isDisabled">
+                                <mat-option [value]="'High'"> High </mat-option>
+                                <mat-option [value]="'Medium'"> Medium </mat-option>
+                                <mat-option [value]="'Low'"> Low </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="myTasksForm.get('Priority').hasError('required')">
+                                Select priority
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Progress</mat-label>
+                            <input matInput formControlName="progress" required type="number" min="0" max="100" />
+                            <mat-icon matSuffix [inline]="true">%</mat-icon>
+
+                            <mat-error *ngIf="myTasksForm.get('progress').hasError('required')">
+                                progress is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="date" readonly />
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="myTasksForm.get('date').hasError('required')">
+                                Please select date
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Details</mat-label>
+                            <textarea matInput formControlName="details"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <div class="example-button-row" align="end">
+                            <button mat-raised-button color="primary" [type]="submit" [disabled]="!myTasksForm.valid"
+                                [mat-dialog-close]="1" (click)="confirmAdd()">
+                                Save
+                            </button>
+                            <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="addContainer">
+    <div *ngIf="isDetails">
+        <div class="modalHeader">
+            <div class="contact-details-name mb-2">{{ myTask.Title }}</div>
+            <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div mat-dialog-content>
+            <mat-card-content>
+                <div class="row mt-5" style="width: 98%">
+                    <div class="col-5 m-b-10">Project Name:</div>
+                    <div class="col-7 pro-left m-b-10">
+                        {{ myTask.Project.Projectname }}
+                    </div>
+                    <div class="col-5 m-b-10">Tasks Start Date :</div>
+                    <div class="col-7 pro-left m-b-10">
+                        <span class="material-icons-outlined project-icon2">
+                            date_range </span>{{ myTask.StartDate | date }}
+                    </div>
+                    <div class="col-5 m-b-10">Tasks deadline :</div>
+                    <div class="col-7 pro-left m-b-10">
+                        <span class="material-icons-outlined project-icon2">
+                            date_range </span>{{ myTask.Deadline | date }}
+                    </div>
+
+
+
+                    <div class="col-5 m-b-10">Priority:</div>
+                    <div class="col-7 pro-lef mb-2">
+                        <ng-template [ngIf]="myTask.Priority == 'High'">
+                            <span class="badge badge-solid-red">High</span>
+                        </ng-template>
+                        <ng-template [ngIf]="myTask.Priority == 'Meduim'"><span
+                                class="badge badge-solid-blue">Medium</span>
+                        </ng-template>
+                        <ng-template [ngIf]="myTask.Priority == 'Low'">
+                            <span class="badge badge-solid-green">Low</span>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-5 m-b-10">Progress:</div>
+                    <div class="col-7 pro-lef mb-2">{{myTask.progress}}%</div>
+                    <div class="col-5 m-b-10">Status:</div>
+                    <div class="col-7 pro-lef mb-2">
+                        <div *ngIf="myTask.Status == 'Closed'">
+                            <span class="badge badge-pill badge-primary col-green">
+                                {{ myTask.Status }}</span>
+                        </div>
+                        <div *ngIf="myTask.Status == 'Pending'">
+                            <span class="badge badge-pill badge-primary col-red">
+                                {{ myTask.Status }}</span>
+                        </div>
+                        <div *ngIf="myTask.Status == 'Open'">
+                            <span class="badge badge-pill badge-primary col-orange">
+                                {{ myTask.Status }}</span>
+                        </div>
+                    </div>
+                    <div class="col-5 m-b-10">Task Details:</div>
+                    <div class="col-7 pro-left m-b-10">{{ myTask.Details }}</div>
+
+                </div>
+            </mat-card-content>
+        </div>
+    </div>
+</div>

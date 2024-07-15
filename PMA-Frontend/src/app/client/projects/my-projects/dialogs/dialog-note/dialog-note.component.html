@@ -1,0 +1,97 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    Need your feedback for your project: {{dialogTitle}}
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+<mat-icon>close</mat-icon>
+</button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="noteForm" (ngSubmit)="submit">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Are you satisfied with the project timeline? </mat-label>
+                        <mat-select formControlName="q1" required>
+                            <mat-option [value]="100">Yes
+                            </mat-option>
+                            <mat-option [value]="0">No
+                            </mat-option>
+
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="noteForm.get('q1').hasError('required')">
+                            Please Select "Yes" or "No"
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+
+                        <mat-label>Are you satisfied with the reporting level?</mat-label>
+                        <mat-select formControlName="q2" required>
+                            <mat-option [value]="100">Yes
+                            </mat-option>
+                            <mat-option [value]="0">No
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="noteForm.get('q2').hasError('required')">
+                            Please Select "Yes" or "No"
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Are you satisfied with the communication on the progress of the project? </mat-label>
+                        <mat-select formControlName="q3" required>
+                            <mat-option [value]="100">Yes
+                            </mat-option>
+                            <mat-option [value]="0">No
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="noteForm.get('q3').hasError('required')">
+                            Please Select "Yes" or "No"
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Are you satisfied with the handling of incidents </mat-label>
+                        <mat-select formControlName="q4" required>
+                            <mat-option [value]="100">Yes
+                            </mat-option>
+                            <mat-option [value]="0">No
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="noteForm.get('q4').hasError('required')">
+                            Please Select "Yes" or "No"
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row" align="end">
+                        <button mat-raised-button color="primary" [type]="submit" [disabled]="!noteForm.valid" [mat-dialog-close]="1" (click)="confirm()">Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

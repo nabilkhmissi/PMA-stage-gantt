@@ -1,0 +1,103 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <img src="{{clients.image}}" alt="avatar" width="46" height="46">
+                <div class="modal-about">
+                    {{dialogTitle}}
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="clientForm" (ngSubmit)="submit">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="fullName" required>
+                        <mat-icon matSuffix>face</mat-icon>
+                        <mat-error *ngIf="clientForm.get('fullName').hasError('required')">
+                            Name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Mobile</mat-label>
+                        <input matInput formControlName="phone" type="number">
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-error *ngIf="clientForm.get('phone').hasError('required')">
+                            Mobile is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" required>
+                        <mat-icon matSuffix>email</mat-icon>
+                        <mat-error *ngIf="clientForm.get('email').hasError('required') || clientForm.get('email').touched">
+                            Please enter a valid email address
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company Name</mat-label>
+                        <input matInput formControlName="company" required>
+                        <mat-icon matSuffix>business</mat-icon>
+                        <mat-error *ngIf="clientForm.get('company').hasError('required') || clientForm.get('company').touched">
+                            Please enter a valid company name
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                       <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Currency</mat-label>
+            <input matInput formControlName="currency" required>
+            <mat-icon matSuffix>paid</mat-icon>
+            <mat-error *ngIf="clientForm.get('currency').hasError('required') || clientForm.get('currency').touched">
+              Please enter a currency
+            </mat-error>
+          </mat-form-field>
+                </div>-->
+                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Billing Method</mat-label>
+                        <mat-select formControlName="Billing" required>
+                            <mat-option [value]="'Fixed Price'">
+                                Fixed Price
+                            </mat-option>
+                            <mat-option [value]="'Hourly User Rate'">
+                                Hourly User Rate
+                            </mat-option>
+                            <mat-option [value]="'Hourly Job Rate'">
+                                Hourly Job Rate
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>receipt</mat-icon>
+                        <mat-error *ngIf="clientForm.get('Billing').hasError('required') || clientForm.get('Billing').touched">
+                            Please enter a billing method
+                        </mat-error>
+                    </mat-form-field>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row" align="end">
+                        <button mat-raised-button color="primary" [type]="submit" [disabled]="!clientForm.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

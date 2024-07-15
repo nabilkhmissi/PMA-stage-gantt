@@ -1,0 +1,8 @@
+# dependencies
+
+node_modules
+src/static
+src/uploads
+.env
+
+# dotenv environment variable files

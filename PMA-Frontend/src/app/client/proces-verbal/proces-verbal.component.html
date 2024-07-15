@@ -1,0 +1,216 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Proces Verbal'" [items]="['Home']" [active_item]="'Proces'"></app-breadcrumb>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="body">
+                                    <div class="responsive_table">
+                                        <div class="materialTableHeader">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <ul class="header-buttons-left ms-0">
+                                                        <li class="tbl-title">
+                                                            <h2>Proces Verbal</h2>
+                                                        </li>
+                                                        <li class="tbl-search-box">
+                                                            <label for="search-input"><i class="material-icons search-icon"
+                                >search</i
+                              ></label
+                            >
+                            <input
+                              placeholder="Search"
+                              type="text"
+                              #filter
+                              (keyup)="applyfilter($event)"
+                              class="browser-default search-field"
+                              aria-label="Search box"
+                              (focus)="setupFilter()"
+                            />
+                          </li>
+                          <!-- <li class="tbl-header-btn">
+                            <div class="m-l-10" matTooltip="ADD">
+                              <button
+                                mat-mini-fab
+                                color="primary"
+                                (click)="addNew()"
+                              >
+                                <mat-icon class="col-white">add</mat-icon>
+                              </button>
+                            </div>
+                          </li> -->
+                          <li class="tbl-header-btn">
+                            <div class="m-l-10" matTooltip="REFRESH">
+                              <button
+                                mat-mini-fab
+                                color="primary"
+                                (click)="refresh()"
+                              >
+                                <mat-icon class="col-white">refresh</mat-icon>
+                              </button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-4">
+                        <ul class="header-buttons">
+                          <li>
+                            <div class="export-button m-l-10" matTooltip="XLSX">
+                                <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName:'Proce-Verbal', sheet: 'sheet1'})" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="export-button m-l-10" matTooltip="CSV">
+                                <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="export-button m-l-10" matTooltip="JSON">
+                                <img src="assets/images/icons/json.png" alt="" (click)="exporter.exportTable('json')" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="export-button m-l-10" matTooltip="TXT">
+                                <img src="assets/images/icons/txt.png" alt="" (click)="exporter.exportTable('txt')" />
+                            </div>
+                        </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter" >
+                    <ng-container matColumnDef="Titre">
+                      <mat-header-cell
+                        mat-header-cell
+                        *matHeaderCellDef
+                      >
+                      Titre
+                      </mat-header-cell>
+                      <mat-cell
+                        mat-cell
+                        *matCellDef="let row"
+                      >
+                      {{ row.Titre }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header 
+                        >description
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        {{ row.description |ShortPipe}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Project">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Project
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        {{ row.Project.Projectname |ShortPipe}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Type_Communication">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Type Communication
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        {{ row.Type_Communication }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Sender">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Sender
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        {{ row.Sender.fullName }}</mat-cell
+                      >
+                    </ng-container>
+                     <ng-container matColumnDef="Present">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >
+                         Members
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"  class="column-nowrap">
+                        <ul class="list-unstyled order-list">
+                          <li
+                            *ngFor="let t of row.equipe"
+                            class="avatar avatar-sm"
+                          >
+                            <img
+                              src="https://pma-backend.prologic.com.tn:3002/static/images/{{
+                                t.image || 'avaat.png'
+                              }}"
+                              matTooltip="{{t.fullName}}"
+                              class="rounded-circle"
+                              alt="team-member"
+                            />
+                          </li>
+                              </ul>
+                      </mat-cell>
+                    </ng-container>
+
+
+                    <!-- <ng-container matColumnDef="actions">
+                      <mat-header-cell
+                        class="psl-3 tbl-col-width-per-10"
+                        *matHeaderCellDef
+                        >Actions
+                      </mat-header-cell>
+                      <mat-cell
+                        *matCellDef="let row; let i = index"
+                        class="psl-3 tbl-col-width-per-10"
+                      >
+                        <button
+                          mat-icon-button
+                          [matMenuTriggerFor]="menu"
+                          (click)="$event.stopPropagation()"
+                        >
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button mat-menu-item (click)="editCall(row)">
+                            <i
+                              class="material-icons-two-tone align-middle msr-2"
+                              >create</i
+                            >
+                            <span>Edit Proces</span>
+                          </button>
+                          <button mat-menu-item (click)="deleteItem(row)">
+                            <i
+                              class="material-icons-two-tone align-middle msr-2"
+                              >delete_forever</i
+                            >
+                            <span>Delete Proces</span>
+                          </button>
+                        </mat-menu>
+                      </mat-cell>
+                    </ng-container> -->
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns">
+                    </mat-header-row>
+                    <mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                      (click)="detailsCall(row)"
+                      [style.cursor]="'pointer'"
+                      matRipple
+                    >
+                    </mat-row>
+                  </mat-table>
+
+                  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

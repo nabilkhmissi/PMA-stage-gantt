@@ -1,0 +1,106 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    {{dialogTitle}}
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+</button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="myRiskForm" (ngSubmit)="submit">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Risk Title</mat-label>
+                        <input matInput formControlName="title" required>
+                        <mat-icon matSuffix>task_alt</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('title').hasError('required')">
+                            Task No is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Project</mat-label>
+                        <mat-select matInput formControlName="project" required>
+                            <mat-option *ngFor="let c of projects" [value]="c">{{c.Projectname}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>business_center</mat-icon>
+                        <mat-error *ngIf="myRiskForm.get('project').hasError('required')">
+                            Project is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- StartDate -->
+            </div>
+            <div class="row">
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Action</mat-label>
+                        <input matInput formControlName="action" required>
+                        <mat-error *ngIf="myRiskForm.get('action').hasError('required')">
+                            fill the action field
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Impact</mat-label>
+                        <mat-select formControlName="impact" required>
+                            <mat-option [value]="'High'">
+                                High
+                            </mat-option>
+                            <mat-option [value]="'Medium'">
+                                Medium
+                            </mat-option>
+                            <mat-option [value]="'Low'">
+                                Low
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="myRiskForm.get('impact').hasError('required')">
+                            Select priority
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="myRiskForm.get('date').hasError('required')">
+                            Please select Date
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Details</mat-label>
+                        <textarea matInput formControlName="details"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row" align="end">
+                        <button mat-raised-button color="primary" [type]="submit" [disabled]="!myRiskForm.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

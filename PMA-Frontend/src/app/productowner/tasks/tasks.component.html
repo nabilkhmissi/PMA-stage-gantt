@@ -1,0 +1,239 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'My Tasks'" [items]="['Home']" [active_item]="'My Tasks'">
+            </app-breadcrumb>
+        </div>
+        <div class="row" *ngIf="dataSource">
+            <div class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-blue order-info-box7">
+                    <div class="info-box7-block">
+                        <h4 class="m-b-20">Total Tasks</h4>
+                        <h2 class="text-end"><i class="fas fa-ticket-alt float-start"></i><span>{{dataSource.data.length}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-green order-info-box7">
+                    <div class="info-box7-block">
+                        <h4 class="m-b-20">Closed Tasks</h4>
+                        <h2 class="text-end"><i class="fas fa-reply float-start"></i><span>{{nb_closed}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-pink order-info-box7">
+                    <div class="info-box7-block">
+                        <h4 class="m-b-20">Open Tasks</h4>
+                        <h2 class="text-end"><i class="fas fa-clipboard-list float-start"></i><span>{{nb_open}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="myTasks">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="responsive_table">
+                            <div class="materialTableHeader">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <ul class="header-buttons-left ms-0">
+                                            <li class="tbl-title">
+                                                <h2> Tasks {{myTasks.length}}</h2>
+
+                                            </li>
+                                            <li class="tbl-search-box">
+                                                <!-- <label for="search-input"><i
+                                                    class="material-icons search-icon">search</i></label>
+                                                <input placeholder="Search" type="text" (keyup)="applyfilter($event)" (focus)="setupFilter('Title','Project','Executor')" [(ngModel)]="filter" class="browser-default search-field" aria-label="Search box">
+                                             -->
+                                             <select class="form-select form-control" (change)="handleProjectSelect($event)">
+                                                <option value="">All projects</option>
+                                                <option *ngFor="let item of projects" [value]="item._id">{{ item.Projectname | ShortPipe }}</option>
+                                            </select>
+                                            </li>
+                                            <li class="tbl-header-btn">
+                                                <mat-spinner *ngIf="loading" style="width: 30px; height: 30px;"></mat-spinner>
+                                            </li>
+                                            <li class="tbl-header-btn">
+                                                <div class="m-l-10" matTooltip="ADD">
+                                                    <button mat-mini-fab color="primary" (click)="addNew()">
+                                                    <mat-icon class="col-white">add</mat-icon>
+                                                </button>
+                                                </div>
+                                            </li>
+                                            <li class="tbl-header-btn">
+                                                <div class="m-l-10" matTooltip="REFRESH">
+                                                    <button mat-mini-fab color="primary" (click)="getTasksByTeamLeader()">
+                                                    <mat-icon class="col-white">refresh</mat-icon>
+                                                </button>
+                                                </div>
+                                            </li>
+                                            <!--                    <li class="tbl-header-btn">
+                                              <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
+                                                  <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
+                                                    <mat-icon class="col-white">delete
+                                                    </mat-icon>
+                                                </button>
+                                              </div>
+                                          </li> -->
+                                        </ul>
+                                    </div>
+                                    <div class="col-4">
+                                        <ul class="tbl-export-btn">
+                                            <!-- <li>
+                                                <div class="export-button m-l-10" matTooltip="XLSX">
+                                                    <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName:'assets-list', sheet: 'sheet1'})" />
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="export-button m-l-10" matTooltip="CSV">
+                                                    <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="export-button m-l-10" matTooltip="JSON">
+                                                    <img src="assets/images/icons/json.png" alt="" (click)="exporter.exportTable('json')" />
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="export-button m-l-10" matTooltip="TXT">
+                                                    <img src="assets/images/icons/txt.png" alt="" (click)="exporter.exportTable('txt')" />
+                                                </div>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
+                                <!-- Checkbox Column -->
+                                <ng-container matColumnDef="select">
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                                        </mat-checkbox>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- ID Column -->
+                                <ng-container matColumnDef="Title">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.Title}}</mat-cell>
+                                </ng-container>
+                                <!--   <ng-container matColumnDef="taskNo">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Task No</mat-header-cell>
+                                  <mat-cell *matCellDef="let row"> {{row.taskNo}}</mat-cell>
+                              </ng-container> -->
+                                <ng-container matColumnDef="Project">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Project</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.Project.Projectname |ShortPipe}}</mat-cell>
+                                </ng-container>
+                                <!--     <ng-container matColumnDef="client">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Client</mat-header-cell>
+                                  <mat-cell *matCellDef="let row"> {{row.client}}</mat-cell>
+                              </ng-container> -->
+                                <ng-container matColumnDef="Status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                                    </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let row">
+                                        <div *ngIf="row.Status=='Open'">
+                                            <span class="badge badge-solid-orange">
+                                            {{row.Status}}</span>
+                                        </div>
+                                        <div *ngIf="row.Status=='Closed'">
+                                            <span class="badge badge-solid-green">
+                                            {{row.Status}}</span>
+                                        </div>
+                                        <div *ngIf="row.Status=='Pending'">
+                                            <span class="badge badge-solid-red">
+                                          {{row.Status}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Priority">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Priority
+                                    </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let row">
+                                        <div *ngIf="row.Priority=='Low'">
+                                            <span class="badge badge-pill badge-primary col-green">
+                                            {{row.Priority}}</span>
+                                        </div>
+                                        <div *ngIf="row.Priority=='Medium'">
+                                            <span class="badge badge-pill badge-primary col-blue">
+                                            {{row.Priority}}</span>
+                                        </div>
+                                        <div *ngIf="row.Priority=='High'">
+                                            <span class="badge badge-pill badge-primary col-red">
+                                            {{row.Priority}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="Type">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Type}}</mat-cell>
+                                </ng-container> -->
+                                <ng-container matColumnDef="Executor">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Executor</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <ul class="list-unstyled order-list">
+                                            <li *ngFor=" let x of row.Executor" class="avatar avatar-sm">
+                                                <img src="https://pma-backend.prologic.com.tn:3002/static/images/{{x.image || 'avaat.png'}}" matTooltip="{{ x.fullName }}"
+                                                    class="rounded-circle" alt="executors-member" />
+                                            </li>
+                                        </ul>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Start">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.StartDate | date: 'MM/dd/yyyy HH:mm'}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Date">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Deadline</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Deadline | date: 'MM/dd/yyyy HH:mm'}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Details">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Details</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> <span class="truncate-text">{{row.Details}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- actions -->
+                                <ng-container matColumnDef="Actions">
+                                    <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)" class="tbl-action-btn" matTooltip="Edit">
+                                      <!--   <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'">
+                                        </app-feather-icons> -->
+                                        <i class="fas fa-edit    "></i>
+                                    </button>
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="deleteItem(i, row)" class="tbl-action-btn" matTooltip="Delete">
+                                        <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'">
+                                        </app-feather-icons> -->
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editCall(row)" [style.cursor]="'pointer'" matRipple>
+                                </mat-row>
+                            </mat-table>
+                            <!-- Loading spinner -->
+
+                            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

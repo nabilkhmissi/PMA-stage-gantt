@@ -1,0 +1,346 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Project Details'" [items]="['Projects']" [active_item]="'Project Details'">
+            </app-breadcrumb>
+        </div>
+        <div class="row" *ngIf="project">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                <div class="card">
+                    <div class="header">
+                        <h2>Project Details</h2>
+                    </div>
+                    <div class="body">
+                        <div class="wrapper wrapper-content animated fadeInUp">
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="m-b-md">
+                                                <!--  <p class="col-blue cursor-pointer pull-right">Edit
+                                                  project</p> -->
+                                                <h3 class="project-name">{{project.Projectname}}</h3>
+                                            </div>
+                                            <dl>
+                                                <dt class="pull-left me-2">Status:</dt>
+                                                <dd>
+                                                    <span _ngcontent-isv-c222="" class="project-bedge2 project-type-Testing">
+                                                      <div _ngcontent-isv-c222="" class="pro-left">
+                                                          {{project.status}}
+                                                      </div>
+                                                  </span>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <dl class="dl-horizontal">
+
+                                                <dt class="pull-left me-2">Client :</dt>
+                                                <dd>{{project.client.fullName}}</dd>
+                                                <dt class="pull-left me-2">TeamLeader:</dt>
+                                                <dd *ngIf="project.TeamLeader"> {{project.TeamLeader.fullName}}</dd>
+                                                <dd *ngIf="!project.TeamLeader"> Not Assigned yet</dd>
+                                                <!--   <dt class="pull-left me-2">Commits:</dt>
+                                              <dd> 175</dd> -->
+                                                <!-- <dt class="pull-left me-2">Version:</dt>
+                                              <dd> v2.5.2 </dd> -->
+                                                <dt class="pull-left me-2">Project Progress:</dt>
+                                                <dd>
+                                                    <div class="progress progress-xs mt-3">
+                                                        <mat-progress-bar mode="determinate" value="{{project.progress}}">
+                                                        </mat-progress-bar>
+                                                    </div>
+                                                </dd>
+                                                <small><strong>{{project.progress.toFixed(0)}}%</strong> Project completed.</small>
+
+                                            </dl>
+
+                                        </div>
+                                        <div class="col-lg-5" id="cluster_info">
+                                            <dl class="dl-horizontal">
+
+
+                                                <dt class="pull-left me-2">StartDate:</dt>
+                                                <dd> {{project.dateDebut | date :'mediumDate'}}</dd>
+                                                <dt class="pull-left me-2">Deadline:</dt>
+                                                <dd> {{project.dateFin | date :'mediumDate'}}</dd>
+                                                <dt class="pull-left me-2">Team:</dt>
+                                                <dd class="project-people" *ngIf="project.equipe.length!=0">
+                                                    <ul class="list-unstyled order-list">
+                                                        <li *ngFor="let t of project.equipe" class="avatar avatar-sm">
+                                                            <img src="https://pma-backend.prologic.com.tn:3002/static/images/{{t.image || 'avaat.png' }}" matTooltip={{t.fullName}} class="rounded-circle" alt="team-member" />
+                                                        </li>
+                                                    </ul>
+                                                </dd>
+                                                <dd class="project-people" *ngIf="project.equipe.length==0">
+                                                    Not assigned yet
+                                                </dd>
+                                                <dt class="pull-left me-2">Note :</dt>
+                                                <dd>{{note}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="project-activity">
+                                                <mat-tab-group>
+                                                    <mat-tab>
+                                                        <ng-template mat-tab-label>
+                                                            <mat-icon class="example-tab-icon msr-2">
+                                                                mark_email_unread
+                                                            </mat-icon>
+                                                            Reclamations
+                                                        </ng-template>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="projectReclamation">
+                                                            <div class="tab-pane active">
+                                                                <div class="feed-activity-list">
+                                                                    <div class="feed-element" *ngFor="let item of projectReclamation">
+                                                                        <div class="pull-left">
+                                                                            <img alt="image" class="rounded-circle avatar avatar-sm" src="https://pma-backend.prologic.com.tn:3002/static/images/{{item.client.image}}">
+                                                                        </div>
+                                                                        <div class="media-body">
+                                                                            <strong>{{item.client.fullName}}</strong> send reclamation for project :
+                                                                            <strong>{{ item.project.Projectname }}</strong> reclamation type is
+                                                                            <strong>{{ item.Type_Reclamation }}</strong><br />
+                                                                            <small class="text-muted">{{item.Addeddate | date:'mediumDate'}}</small>
+                                                                            <div class="well" style="background-color:#0e3f5b ;color: rgb(215, 215, 215);">
+                                                                              
+                                                                              <strong>Code : </strong>{{item.CodeRec}}<br />
+                                                                              <strong>Claim note : </strong>{{ item.Comment }}
+                                                                            </div>
+                                                                            <div class="well" style="background-color:#0c85bd ;color: rgb(215, 215, 215);">
+                                                                                <strong>Reply : </strong>{{ item.reponse }}
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                        <div class="feed-element text-center" *ngIf="projectReclamation === undefined">
+                                                                          No Reclamation found
+                                                                        </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </mat-tab>
+                                                    <mat-tab>
+                                                        <ng-template mat-tab-label>
+                                                            <mat-icon class="example-tab-icon msr-2">
+                                                                local_activity
+                                                            </mat-icon>
+                                                            Tasks
+                                                        </ng-template>
+
+                                                        <table class="table table-striped" *ngIf="projectTasks">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Title</th>
+                                                                    <th>Status</th>
+
+                                                                    <th>Executor</th>
+                                                                    <th>Created Date</th>
+                                                                    <th>Deadline</th>
+                                                                    <th>Priority</th>
+                                                                    <th>Details</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let item of projectTasks">
+                                                                    <td>{{item.Title}}
+                                                                    </td>
+                                                                    <td *ngIf="item.Status == 'Closed'">
+                                                                        <span class="label label-success">
+                                                                        {{ item.Status }}</span
+                                                                      >
+                                                                    </td>
+                                                                    <td *ngIf="item.Status == 'Pending'">
+                                                                      <span class="label label-danger">
+                                                                        {{ item.Status }}</span
+                                                                      >
+                                                                    </td>
+                                                                    <td *ngIf="item.Status == 'Open'">
+                                                                      <span class="label label-warning">
+                                                                        {{ item.Status }}</span
+                                                                      >
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul class="list-unstyled order-list">
+                                                                            <li *ngFor=" let x of item.Executor" class="avatar avatar-sm">
+                                                                              <img src="https://pma-backend.prologic.com.tn:3002/static/images/{{x.image || 'avaat.png'}}"
+                                                                                matTooltip="{{ x.fullName }}"
+                                                                                class="rounded-circle"
+                                                                                alt="executors-member"/>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>{{ item.StartDate | date: 'MM/dd/yyyy HH:mm' }}</td>
+                                                                    <td>{{ item.Deadline | date: 'MM/dd/yyyy HH:mm' }}</td>
+                                                                    <!-- <td>
+                                                                        {{item.Type}}
+                                                                    </td> -->
+                                                                    <td>
+                                                                        {{item.Priority}}
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="small">
+                                                                            {{item.Details}} </p>
+
+                                                                    </td>
+
+                                                                </tr>
+
+
+                                                                <tr class="text-center" *ngIf="projectTasks.length==0 || projectTasks=='undefined'">
+                                                                    No Task found
+                                                                </tr>
+
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </mat-tab>
+                                                </mat-tab-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <div class="card">
+                    <div class="body">
+                        <div class="wrapper">
+                            <div class="project-card-header">Project description
+                            </div>
+                            <p>
+                                {{project.description}}</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="body">
+                        <div class="wrapper">
+                            <div class="project-card-header">Client Details
+                            </div>
+                            <div class="project-info-box">
+                                <p><b>Client name:</b> {{project.client.fullName}}</p>
+                                <p><b>Company:</b>{{project.client.company}}</p>
+                                <p><b>Email:</b> {{project.client.email}}</p>
+                                <p><b>Phone:</b>{{project.client.phone}}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">Appreciation lettre</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'" *ngIf="project.lettre">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.lettre)" class="mb-1">
+                              {{ project.lettre }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card" *ngIf="project.kickoff">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">Kick off</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.kickoff)" class="mb-1">
+                              {{ project.kickoff }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card" *ngIf="project.HLD_LLD">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">HLD LLD</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.HLD_LLD)" class="mb-1">
+                              {{ project.HLD_LLD }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card" *ngIf="project.build_book">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">Build Book</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.build_book)" class="mb-1">
+                              {{ project.build_book }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card" *ngIf="project.access_document">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">Access Document</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.access_document)" class="mb-1">
+                              {{ project.access_document }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card" *ngIf="project.other">
+                    <div class="body">
+                      <div class="wrapper">
+                        <div class="project-card-header">Other document</div>
+                        <div class="d-flex mb-2" [style.cursor]="'pointer'">
+                          <div class="project-doc-icon text-center">
+                            <i class="far fa-file-pdf col-red"></i>
+                          </div>
+                          <div class="content ms-3">
+                            <p (click)="download(project.other)" class="mb-1">
+                              {{ project.other }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,169 @@
+<div class="addContainer">
+    <div *ngIf="!isDetails" class="contact-form">
+        <div class="modalHeader">
+            <div class="editRowModal">
+                <div class="modalHeader clearfix">
+                    <!--           <img [src]='contacts.img' alt="avatar">
+-->
+                    <div class="modal-about">
+                        {{dialogTitle}}
+                    </div>
+                </div>
+            </div>
+            <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+        </div>
+        <div mat-dialog-content>
+            <form class="register-form m-4" [formGroup]="contactsForm" (ngSubmit)="submit">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Titre</mat-label>
+                            <input matInput formControlName="Titre" required>
+                            <i class="material-icons-two-tone color-icon" matSuffix>label</i>
+                            <mat-error *ngIf="contactsForm.get('Titre').hasError('required')">
+                                Titre is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Project</mat-label>
+                            <mat-select matInput formControlName="Project" [(ngModel)]="selectedProject" required>
+                                <mat-option *ngIf="projects?.length === 0" [value]="null">You have no project
+                                </mat-option>
+                                <mat-option *ngFor="let c of projects" [value]="c">{{c.Projectname}}
+                                </mat-option>
+                            </mat-select>
+
+                            <i class="material-icons-two-tone color-icon" matSuffix>work</i>
+                            <mat-error *ngIf="contactsForm.get('Project').hasError('required')">
+                                type="number" is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Present Memebers</mat-label>
+                            <mat-select matInput formControlName="equipe" multiple required>
+                                <mat-option *ngFor="let c of filteredFormData" [value]="c._id">{{c.fullName}}
+                                </mat-option>
+                            </mat-select>
+
+                            <i class="material-icons-two-tone color-icon" matSuffix>group</i>
+                            <mat-error *ngIf="contactsForm.get('equipe').hasError('required')">
+                                equipe is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label> Date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="Date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="contactsForm.get('Date').hasError('required')">
+                                Please select date
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>Type of Communication</mat-label>
+                            <mat-select matInput formControlName="Type_Communication" required>
+                                <mat-option value="internal meeting"> internal meeting
+                                </mat-option>
+                                <mat-option value="official meeting"> official meeting
+                                </mat-option>
+                                <mat-option value="internal meeting"> client request
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-label>description</mat-label>
+                            <textarea matInput formControlName="description" required></textarea>
+                            <!--               <i class="material-icons-two-tone color-icon" matSuffix>email</i>
+-->
+                            <mat-error *ngIf="contactsForm.get('description').hasError('required')">
+                                Please enter a description
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <div class="example-button-row" align="end">
+                            <button mat-raised-button color="primary" [type]="submit" [disabled]="!contactsForm.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Save</button>
+                            <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="isDetails" class="contact-details">
+        <div class="modalHeader">
+            <div class="editRowModal">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about contact-header">
+                        <div class="contact-details-img">
+                        </div>
+                        <div class="contact-details-heading">
+                            <i class="material-icons-two-tone color-icon">label</i>
+                            <div class="contact-details-name mb-2">{{pv.Titre}}</div>
+                            <div class="badge col-green">Proces Verbal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+        </div>
+        <div mat-dialog-content>
+            <mat-card-content>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">description</i>
+                    <div class="contact-detail-info">Description : {{pv.description}}
+                    </div>
+                </div>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">title</i>
+                    <div class="contact-detail-info"> Type : {{pv.Type_Communication}}
+                    </div>
+                </div>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">event</i>
+                    <div class="contact-detail-info"> Date : {{pv.Date | date: 'MMMM d, yyyy'}}
+                    </div>
+                </div>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">work</i>
+                    <div class="contact-detail-info"> Project : {{pv.Project.Projectname }}
+                    </div>
+                </div>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">person</i>
+                    <div class="contact-detail-info"> Sender : {{pv.Sender.fullName}}
+                    </div>
+                </div>
+                <div class="contact-details-field">
+                    <i class="material-icons-two-tone color-icon">group</i> Present:
+                    <div class="contact-detail-info" *ngFor="let item of equipe"> {{item.fullName }},
+                    </div>
+                </div>
+                <!-- groupgroup -->
+            </mat-card-content>
+        </div>
+    </div>
+</div>

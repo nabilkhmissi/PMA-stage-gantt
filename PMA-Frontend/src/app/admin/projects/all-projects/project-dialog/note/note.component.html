@@ -1,0 +1,25 @@
+<div class="addContainer">
+    <h3 mat-dialog-title>Give a rate for the project ?</h3>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="note">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Give a Rate</mat-label>
+                        <input matInput formControlName="name" placeholder="Project Rate" required type="number" max="100">
+                        <mat-icon matSuffix>title</mat-icon>
+                        <mat-error *ngIf="note.get('name').hasError('required')">
+                            Rate is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+    <mat-dialog-actions align="end" class="mb-1">
+        <button mat-flat-button color="primary" [mat-dialog-close]="1" (click)="noter()" [disabled]="!note.valid">
+        save
+    </button>
+        <button mat-flat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+    </mat-dialog-actions>
+</div>

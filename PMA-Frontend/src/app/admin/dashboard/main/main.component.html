@@ -1,0 +1,292 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Dashboad'" [items]="['Home']" [active_item]="'Dashboad'"></app-breadcrumb>
+        </div>
+        <!-- ============================== RECAP NUMBERS ========================== -->
+        <div class="row " *ngIf="Allprojects">
+            <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-green-dark">
+                    <div class="card-statistic-3">
+                        <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
+                        <div class="card-content">
+                            <h4 class="card-title">All project</h4>
+                            <span class="data-1">{{projectsCount}}</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-cyan-dark">
+                    <div class="card-statistic-3">
+                        <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h4 class="card-title">Client</h4>
+                            <span class="data-1">{{nb_client}}</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-purple-dark">
+                    <div class="card-statistic-3">
+                        <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h4 class="card-title">Team Leader</h4>
+                            <span class="data-1">{{nb_product}}</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-orange-dark">
+                    <div class="card-statistic-3">
+                        <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h4 class="card-title">Engineer</h4>
+                            <span class="data-1">{{nb_employe}}</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================== ALL PROJECTS =========================== -->
+        <div class="row" *ngIf="Allprojects">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8" >
+                <div class="card" >
+                    <div class="row header" style="justify-content: space-between;">
+                        <div class="col-2">
+                            <h2>Projects</h2>
+                        </div>
+                        <div class="col-2">
+                            <mat-spinner *ngIf="loading" style="width: 30px; height: 30px;"></mat-spinner>
+                        </div>
+                        <div class="col-8" style="display: flex;gap: 1rem;">
+                            <div class="project-search">
+                                <i class="fa fa-search"></i>
+                                <input class="form-control" placeholder="Client name" (input)="handleProjectByClientSearch($event)"/>
+                            </div>
+                            <div class="project-search">
+                                <i class="fa fa-search"></i>
+                                <input class="form-control" placeholder="Search by project name" (input)="handleProjectSearch($event)"/>
+                            </div>
+                            <select class="form-select form-control" (change)="handleYearSelect($event)" style="width: 50%;">
+                                <option value="">Select Year</option>
+                                <option *ngFor="let year of lastTenYears" [value]="year">{{ year }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tableBody fix-width-container" style="height: 500px;">
+                        <div class="responsive_table">
+                            <table class="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th>Note client</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr *ngFor="let item of Allprojects" (click)="redirect(item._id)" style="cursor: pointer;">
+                                            <td>{{item.Projectname}}</td>
+                                            <td>{{item.progress.toFixed(0)}}%</td>
+                                            <td>
+                                                <div class="badge badge-solid-blue" *ngIf="item.status=='In Progress'">
+                                                    {{item.status}}</div>
+                                                <div class="badge badge-solid-green" *ngIf="item.status=='Completed'">
+                                                    {{item.status}}</div>
+                                                <div class="badge badge-solid-red" *ngIf="item.status=='Pending'">
+                                                    {{item.status}}</div>
+                                            </td>
+                                            <td>{{ item.note_Client }} </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================== TOP PARTICIPATION ================================== -->
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12" >
+                <div class="card fix-width-container" >
+                    <div class="header">
+                        <h2>Top engineer participations in projects</h2>
+                    </div>
+                    <div class="body" style="height: 700px;">
+                        <div id="chart">
+                            <apx-chart [series]="barChartOptions?.series" [chart]="barChartOptions?.chart"
+                             [plotOptions]="barChartOptions?.plotOptions" 
+                            [xaxis]="barChartOptions?.xaxis">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================== RECLAMATIONS =========================== -->
+        <div class="row" *ngIf="Allprojects" >
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+            <div class="card fix-width-container reclamations-container">
+                <div class="header">
+                    <h2>Pending Claims</h2>
+                </div>
+                <div class="body" style="height: 300px;">
+                    <mat-table #table matTableExporter [dataSource]="reclamations" matSort class="mat-cell">
+                        <ng-container matColumnDef="Title">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Title
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.Title}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Type Reclamation">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Type Reclamation
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.Type_Reclamation}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="date of creation">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>date of creation
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                {{row.Addeddate | date: 'MM/dd/yyyy'}}</mat-cell>
+                        </ng-container>
+                        Project Title
+                        <ng-container matColumnDef="Project Title">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Project
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.project?.Projectname |ShortPipe}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                            </mat-header-cell>
+                            <mat-cell mat-cell *matCellDef="let row">
+                                <div *ngIf="row.status=='Treated'">
+                                    <span class="badge badge-solid-green">
+                                        {{row.status}}</span>
+                                </div>
+                                <div *ngIf="row.status=='Pending'">
+                                    <span class="badge badge-solid-red">
+                                        {{row.status}}</span>
+                                </div>
+
+                                <div *ngIf="row.status=='In treatment'">
+                                    <span class="badge badge-solid-blue">
+                                        {{row.status}}</span>
+                                </div>
+                                <div *ngIf="row.status=='Validate'">
+                                    <span class="badge badge-solid-blue">
+                                        {{row.status}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="client">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>client
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="column-nowrap">
+                                {{row.client.fullName}}
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+            <div class="card fix-width-container">
+                <div class="header">
+                    <h2>Top Team Leaders Leading projects</h2>
+                </div>
+                <div class="body" >
+                    <div id="chart">
+                        <apx-chart [series]="barChartOptions1?.series" [chart]="barChartOptions1?.chart"
+                                [plotOptions]="barChartOptions1?.plotOptions" 
+                                [xaxis]="barChartOptions1?.xaxis">
+                        </apx-chart>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        <!-- ============================== TASKS ================================== -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="row header" style="justify-content: space-between">
+                    <div class="col-2"> <h2>Tasks</h2></div>
+                    <div class="col-2"> <mat-spinner *ngIf="loading" style="width: 30px; height: 30px;"></mat-spinner></div>
+                    <div class="col-8"> 
+                        <select class="form-select form-control" (change)="handleProjectSelect($event)">
+                            <option value="">All projects</option>
+                            <option *ngFor="let item of Allprojects" [value]="item._id">{{ item.Projectname}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="tableBody">
+                    <div class="responsive_table fix-width-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Task Title</th>
+                                    <th>Executor</th>
+                                    <th>Project title</th>
+                                    <th>Priority</th>
+                                    <th>Progress</th>
+                                    <th>Start Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of tasks">
+                                    <td>{{item.Title}}</td>
+                                    <td>
+                                        <ul class="list-unstyled order-list">
+                                            <li *ngFor=" let x of item.Executor" class="avatar avatar-sm">
+                                                <img src="{{serverImageUrl}}/{{x.image}}"
+                                                    matTooltip="{{ x.fullName }}" class="rounded-circle"
+                                                    alt="executors-member" />
+                                            </li>
+                                        </ul>
+                                    </td>
+
+                                    <td>{{item.Project?.Projectname |ShortPipe}}</td>
+                                    <td>
+                                        <div class="badge col-blue" *ngIf="item.Priority=='Medium' ">Medium</div>
+                                        <div class="badge col-red" *ngIf="item.Priority=='High'">High</div>
+                                        <div class="badge col-green" *ngIf="item.Priority=='Low' ">Low</div>
+                                    </td>
+
+                                    <td>
+                                        <mat-progress-bar mode="determinate"
+                                            class="progress-xs progress-round sky-progress progress-shadow"
+                                            value="{{item.progress}}">
+                                        </mat-progress-bar>
+                                    </td>
+                                    <td>
+                                        {{item.StartDate | date:"dd/MM/yyyy"}}
+                                    </td>
+                                    <td>
+                                        {{item.Status}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

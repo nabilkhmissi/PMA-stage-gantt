@@ -1,0 +1,107 @@
+<div class="addContainer">
+    <div *ngIf="isDetails" class="contact-details">
+        <div class="modalHeader">
+            <div class="contact-details-name mb-2">{{ myProjects.Projectname }}</div>
+            <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+        </div>
+        <div mat-dialog-content>
+            <mat-card-content>
+                <div class="row mt-5" style="width: 98%">
+                    <div class="col-5 m-b-10">Client Name:</div>
+                    <div class="col-7 pro-left m-b-10">
+                        {{ myProjects.client.fullName }}
+                    </div>
+                    <div class="col-5 m-b-10">Project Start Date:</div>
+                    <div class="col-7 pro-left m-b-10">
+                        <span class="material-icons-outlined project-icon2">
+              date_range </span
+            >{{ myProjects.dateDebut | date }}
+          </div>
+          <!-- <div class="col-5 m-b-10">Project End Date:</div>
+                    <div class="col-7 pro-left m-b-10"> <span class="material-icons-outlined project-icon2">
+              date_range
+            </span>{{ myProjects.endDate | date }}</div> -->
+                    <div class="col-5 m-b-10">Project DeadLine:</div>
+                    <div class="col-7 pro-left m-b-10">
+                        <span class="material-icons-outlined project-icon2">
+              date_range </span
+            >{{ myProjects.dateFin | date }}
+          </div>
+          <div class="col-5 m-b-10">Team:</div>
+          <div class="col-7 pro-left">
+            <ul class="list-unstyled order-list">
+              <li
+                class="avatar avatar-sm"
+                *ngFor="let item of myProjects.equipe"
+              >
+                <img
+                  src="https://pma-backend.prologic.com.tn:3002/static/images/{{ item.image }}"
+                  alt="user"
+                  matTooltip="{{ item.fullName }}"
+                  class="rounded-circle"
+                  width="40"
+                  height="40"
+                />
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-5 m-b-10">Priority:</div>
+          <div class="col-7 pro-lef mb-2">
+            <ng-template [ngIf]="myProjects.priority == High">
+              <span class="badge badge-solid-red">High</span>
+                        </ng-template>
+                        <ng-template [ngIf]="myProjects.priority == Meduim"><span class="badge badge-solid-blue">Medium</span>
+                        </ng-template>
+                        <ng-template [ngIf]="myProjects.priority == Low">
+                            <span class="badge badge-solid-green">Low</span>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-5 m-b-10">Progress:</div>
+                    <div class="col-7 pro-lef mb-2">
+                        <mat-progress-bar mode="determinate" value="{{ myProjects.progress }}" style="width: 50%">
+                        </mat-progress-bar>
+                    </div>
+                    <div class="col-5 m-b-10">Status:</div>
+                    <div class="col-7 pro-lef mb-2">
+                        <div *ngIf="myProjects.status == 'Completed'">
+                            <span class="badge badge-pill badge-primary col-green">
+                {{ myProjects.status }}</span
+              >
+            </div>
+            <div *ngIf="myProjects.status == 'on Hold'">
+              <span class="badge badge-pill badge-primary col-orange">
+                {{ myProjects.status }}</span
+              >
+            </div>
+            <div *ngIf="myProjects.status == 'In Progress'">
+              <span class="badge badge-pill badge-primary col-cyan">
+                {{ myProjects.status }}</span
+              >
+            </div>
+            <div *ngIf="myProjects.status == 'Pending'">
+              <span class="badge badge-pill badge-primary col-red">
+                {{ myProjects.status }}</span
+              >
+            </div>
+          </div>
+          <div class="col-5 m-b-10">Project Details:</div>
+          <div class="col-7 pro-left m-b-10">{{ myProjects.description }}</div>
+          <div class="col-5 m-b-10">Project file:</div>
+          <div class="col-7 pro-left m-b-10" [style.cursor]="'pointer'">
+            <div class="project-doc-icon text-center">
+              <i class="far fa-file-pdf col-red"></i>
+              <p (click)="download(myProjects.file) ">{{myProjects.file }}</p>
+
+            </div>
+           <!--  <div class="content ms-3 ">
+          </div> -->
+          </div>
+        </div>
+      </mat-card-content>
+    </div>
+  </div>
+</div>

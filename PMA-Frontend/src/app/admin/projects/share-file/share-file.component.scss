@@ -1,0 +1,20 @@
+.email-form{
+    position: relative;
+}
+
+.email-suggestions{
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.email-suggestions li{
+    padding: 0.5rem;
+}
+
+.email-suggestions li:hover{
+    background-color: #cdcdcd;
+}

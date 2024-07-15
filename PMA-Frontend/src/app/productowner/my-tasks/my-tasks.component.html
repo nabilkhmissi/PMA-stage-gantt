@@ -1,0 +1,134 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'My Tasks'" [items]="['Home']" [active_item]="'My Tasks'">
+            </app-breadcrumb>
+        </div>
+        <div class="row" *ngIf="myTasks">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="responsive_table">
+                            <div class="materialTableHeader">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <ul class="header-buttons-left ms-0">
+                                            <li class="tbl-title">
+                                                <h2>My Tasks {{myTasks.length}}</h2>
+                                            </li>
+                                            <li class="tbl-search-box">
+                                             <select class="form-select form-control" (change)="handleProjectSelect($event)">
+                                                <option value="">All projects</option>
+                                                <option *ngFor="let item of projects" [value]="item._id">{{ item.Projectname | ShortPipe }}</option>
+                                            </select>
+                                            </li>
+                                            <li class="tbl-header-btn">
+                                                <div class="m-l-10" matTooltip="ADD">
+                                                    <mat-spinner *ngIf="loading" style="width: 30px; height: 30px;"></mat-spinner>
+                                                </div>
+                                            </li>
+                                            <li class="tbl-header-btn">
+                                                <div class="m-l-10" matTooltip="REFRESH">
+                                                    <button mat-mini-fab color="primary" (click)="refresh()">
+                                                      <mat-icon class="col-white">refresh</mat-icon>
+                                                  </button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-4">
+                                        <ul class="tbl-export-btn">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
+                                <ng-container matColumnDef="Title">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Task Title</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Title}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="project">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Project</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Project?.Projectname}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="progress">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Progress</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <mat-progress-bar mode="determinate" value="{{ row.progress }}" style="width: 80%;" matTooltip="{{row.progress}}%">
+                                        </mat-progress-bar>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                                    </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let row">
+                                        <div *ngIf="row.Status==='Open'">
+                                            <span class="badge badge-solid-orange">
+                                              {{row.Status}}</span>
+                                        </div>
+                                        <div *ngIf="row.Status==='Closed'">
+                                            <span class="badge badge-solid-green">
+                                              {{row.Status}}</span>
+                                        </div>
+                                        <div *ngIf="row.Status==='Pending'">
+                                            <span class="badge badge-solid-red">
+                                            {{row.Status}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="priority">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Priority
+                                    </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let row">
+                                        <div *ngIf="row.Priority=='Low'">
+                                            <span class="badge badge-pill badge-primary col-green">
+                                              {{row.Priority}}</span>
+                                        </div>
+                                        <div *ngIf="row.Priority=='Medium'">
+                                            <span class="badge badge-pill badge-primary col-blue">
+                                              {{row.Priority}}</span>
+                                        </div>
+                                        <div *ngIf="row.Priority=='High'">
+                                            <span class="badge badge-pill badge-primary col-red">
+                                              {{row.Priority}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Start">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.StartDate | date: 'MM/dd/yyyy HH:mm'}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="deadline">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Deadline</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Deadline | date: 'MM/dd/yyyy HH:mm'}}</mat-cell>
+                                </ng-container>
+
+                                <!-- actions -->
+                                <ng-container matColumnDef="actions">
+                                    <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)" class="tbl-action-btn" matTooltip="Edit">
+                                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'">
+                                          </app-feather-icons>
+                                      </button>
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="deleteItem(i, row)" class="tbl-action-btn" matTooltip="Delete">
+                                        
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                                </mat-row>
+                            </mat-table>
+
+                            <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

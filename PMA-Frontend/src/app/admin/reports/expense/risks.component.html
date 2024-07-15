@@ -1,0 +1,152 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Risks'" [items]="['Reports']" [active_item]="'Risks'">
+            </app-breadcrumb>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="body">
+                                    <div class="responsive_table">
+                                        <div class="materialTableHeader">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <ul class="header-buttons-left ms-0">
+                                                        <li class="tbl-title">
+                                                            <h2>Risks</h2>
+                                                        </li>
+                                                        <li class="tbl-search-box">
+                                                            <label for="search-input"><i
+                                                                    class="material-icons search-icon">search</i></label>
+                                                            <input placeholder="Search" type="text" (keyup)="applyfilter($event)" #filter class="browser-default search-field" (focus)="setupFilter()" aria-label="Search box">
+                                                        </li>
+                                                        <li class="tbl-header-btn">
+                                                            <div class="m-l-10" matTooltip="REFRESH">
+                                                                <button mat-mini-fab color="primary" (click)="refresh()">
+                                                              <mat-icon class="col-white">refresh</mat-icon>
+                                                          </button>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-4">
+                                                    <ul class="header-buttons">
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="XLSX">
+                                                                <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName:'risks-list', sheet: 'risks'})" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="CSV">
+                                                                <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="JSON">
+                                                                <img src="assets/images/icons/json.png" alt="" (click)="exporter.exportTable('json')" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="TXT">
+                                                                <img src="assets/images/icons/txt.png" alt="" (click)="exporter.exportTable('txt')" />
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
+
+                                            <!-- ID Column -->
+
+                                            <ng-container matColumnDef="Title">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.title}}
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="Project">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Project
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.project.Projectname|ShortPipe}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="User">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>User
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row" class="column-nowrap"> {{row.user.fullName}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Action">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.action}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Impact">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Impact
+                                                </mat-header-cell>
+                                                <mat-cell mat-cell *matCellDef="let row">
+                                                    <div *ngIf="row.impact=='Low'">
+                                                        <span class="badge badge-solid-green">
+                                                            {{row.impact}}</span>
+                                                    </div>
+                                                    <div *ngIf="row.impact=='Medium'">
+                                                        <span class="badge badge-solid-orange">
+                                                          {{row.impact}}</span>
+                                                    </div>
+                                                    <div *ngIf="row.impact=='High'">
+                                                        <span class="badge badge-solid-red">
+                                                            {{row.impact}}</span>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Date">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row">
+                                                    {{row.date | date: 'MM/dd/yyyy'}}</mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Details">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Details
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.details}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="actions">
+                                                <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+
+                                                    <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="deleteItem(i, row)" class="tbl-action-btn" matTooltip="Delete">
+                                                  <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'">
+                                                  </app-feather-icons> -->
+                                                  <i class="fa fa-trash" aria-hidden="true"></i>
+                                              </button>
+                                                </mat-cell>
+                                            </ng-container>
+                                            <mat-header-row *matHeaderRowDef="displayedColumns">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                                            </mat-row>
+                                        </mat-table>
+
+                                        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                                        </mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

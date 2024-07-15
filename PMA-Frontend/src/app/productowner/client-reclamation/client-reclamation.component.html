@@ -1,0 +1,159 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Reclamations'" [active_item]="['Reclamation']">
+            </app-breadcrumb>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="body">
+                                    <div class="responsive_table">
+                                        <div class="materialTableHeader">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <ul class="header-buttons-left ms-0">
+                                                        <li class="tbl-title">
+                                                            <h2>Reclamation</h2>
+                                                        </li>
+                                                        <li class="tbl-search-box">
+                                                            <label for="search-input"><i
+                                                                  class="material-icons search-icon">search</i></label>
+                                                            <input placeholder="Search" type="text" (keyup)="applyfilter($event)" #filter class="browser-default search-field" (focus)="setupFilter()" aria-label="Search box">
+                                                        </li>
+
+                                                        <li class="tbl-header-btn">
+                                                            <div class="m-l-10" matTooltip="REFRESH">
+                                                                <button mat-mini-fab color="primary" (click)="refresh()">
+                                                              <mat-icon class="col-white">refresh</mat-icon>
+                                                          </button>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-4">
+                                                    <ul class="header-buttons">
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="XLSX">
+                                                                <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName:'assets-list', sheet: 'sheet1'})" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="CSV">
+                                                                <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="JSON">
+                                                                <img src="assets/images/icons/json.png" alt="" (click)="exporter.exportTable('json')" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="export-button m-l-10" matTooltip="TXT">
+                                                                <img src="assets/images/icons/txt.png" alt="" (click)="exporter.exportTable('txt')" />
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
+
+
+
+                                            <ng-container matColumnDef="Title">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.Title}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Type Reclamation">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type Reclamation
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.Type_Reclamation}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="date of creation">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>date of creation
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row">
+                                                    {{row.Addeddate | date: 'MM/dd/yyyy'}}</mat-cell>
+                                            </ng-container>
+                                            Project Title
+                                            <ng-container matColumnDef="Project Title">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Project
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.project.Projectname}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="status">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                                                </mat-header-cell>
+                                                <mat-cell mat-cell *matCellDef="let row">
+                                                    <div *ngIf="row.status=='Treated'">
+                                                        <span class="badge badge-solid-green">
+                                                          {{row.status}}</span>
+                                                    </div>
+                                                    <div *ngIf="row.status=='Pending'">
+                                                        <span class="badge badge-solid-red">
+                                                          {{row.status}}</span>
+                                                    </div>
+                                                    <div *ngIf="row.status=='Validate'">
+                                                        <span class="badge badge-solid-blue">
+                                                        {{row.status}}</span>
+                                                    </div>
+                                                    <div *ngIf="row.status=='In treatment'">
+                                                        <span class="badge badge-solid-blue">
+                                                          {{row.status}}</span>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="client">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>client
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row" class="column-nowrap"> {{row.client.fullName}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="Comment">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Comment
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row"> {{row.Comment}}
+                                                </mat-cell>
+                                            </ng-container>
+
+
+
+                                            <ng-container matColumnDef="Actions">
+                                                <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+                                                    <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)" class="tbl-action-btn" matTooltip="Edit">
+                                                <!--   <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'">
+                                                  </app-feather-icons> -->
+                                                  <i class="fas fa-edit    "></i>
+                                              </button>
+
+                                                </mat-cell>
+                                            </ng-container>
+                                            <mat-header-row *matHeaderRowDef="displayedColumns">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                                            </mat-row>
+                                        </mat-table>
+                                        <!-- Loading spinner -->
+
+                                        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                                        </mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

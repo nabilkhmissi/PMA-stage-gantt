@@ -1,0 +1,158 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Profile'" [items]="['Home','Extra']" [active_item]="'Profile'">
+            </app-breadcrumb>
+        </div>
+        <!-- Your content goes here  -->
+        <div class="row clearfix" *ngIf="userdata">
+            <div class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="m-b-20">
+                        <div class="contact-grid">
+                            <div class="profile-header " [ngClass]="getClassNme()">
+                                <div class="user-name">{{userdata.fullName}}</div>
+                                <div class="name-center">{{CurrentUser.roles}} </div>
+                            </div>
+                            <img src="{{userdata.image}}" class="user-img" alt="" width="200px" style="aspect-ratio: 1;">
+                            <p>
+                                Adress: {{userdata.address}} </p>
+                            <br />
+                            <p> Nationality : {{userdata.nationality}}</p>
+
+                            <div>
+                                <span class="phone">
+                  <i class="material-icons">phone</i>{{userdata.phone}} <br/>
+                  <i class="material-icons">email</i>{{userdata.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="card">
+                    <mat-tab-group>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon msr-2">settings</mat-icon>
+                                Settings
+                            </ng-template>
+                            <div class="header">
+                                <h2>
+                                    <strong>Security</strong> Settings</h2>
+                            </div>
+                            <form [formGroup]="SecuForm" (ngSubmit)="SaveSecSettings()">
+                                <div class="body">
+                                    <div class="example-container">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Current Password</mat-label>
+                                            <input matInput type="password" formControlName="oldPassword">
+                                            <mat-error *ngIf="SecuForm.get('oldPassword').hasError('required')">
+                                                password is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>New Password</mat-label>
+                                            <input matInput type="password" formControlName="newPassword">
+                                            <mat-error *ngIf="SecuForm.get('newPassword').hasError('required')">
+                                                New password is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <button mat-raised-button color="primary" [disabled]="!SecuForm.valid">Save</button>
+                                </div>
+                            </form>
+                            <div class="header">
+                                <h2>
+                                    <strong>Account</strong> Settings</h2>
+                            </div>
+                            <form [formGroup]="accForm" (ngSubmit)="Save()">
+                                <div class="body">
+                                    <div class="row clearfix">
+
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Full Name</mat-label>
+                                                    <input matInput formControlName="fullName" placeholder="fullName" >
+                                                    <mat-error *ngIf="accForm.get('fullName').hasError('required')">
+                                                        fullName is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>City</mat-label>
+                                                    <input matInput formControlName="City" placeholder="City">
+                                                    <mat-error *ngIf="accForm.get('City').hasError('required')">
+                                                        City is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>phone</mat-label>
+                                                    <input matInput formControlName="phone" placeholder="phone" type="number">
+                                                    <mat-error *ngIf="accForm.get('phone').hasError('required')">
+                                                        phone is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Country</mat-label>
+                                                    <input matInput formControlName="Country" placeholder="Country">
+                                                    <mat-error *ngIf="accForm.get('Country').hasError('required')">
+                                                        phone is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Address</mat-label>
+                                                    <textarea matInput formControlName="Address" placeholder="Address"></textarea>
+                                                    <mat-error *ngIf="accForm.get('Address').hasError('required')">
+                                                        Adress is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Nationality</mat-label>
+                                                    <textarea matInput formControlName="nationality" placeholder="Nationality"></textarea>
+                                                    <mat-error *ngIf="accForm.get('nationality').hasError('required')">
+                                                        Nationality is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-label>Upload Image</mat-label>
+                                                <app-image-upload formControlName="Img"></app-image-upload>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button mat-raised-button color="primary">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
